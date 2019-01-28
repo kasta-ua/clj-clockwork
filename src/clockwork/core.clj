@@ -89,9 +89,10 @@
 
 (defn parse-body-params [{:keys [body] :as req}]
   (when-not (nil? body)
+    (.reset body)
     (case (get-in req [:headers "content-type"])
       "application/json"
-      (-> body slurp json/read-value)
+      (-> body json/read-value)
 
       "application/x-www-form-urlencoded"
       (-> body slurp codec/form-decode)
@@ -188,8 +189,8 @@
 
 (defn profile-request [app req opts]
   (binding [*current-profiler* (atom (initial-profiler-data))]
-    (let [res      (app req)
-          data     (-construct req res @*current-profiler* opts)]
+    (let [res  (app req)
+          data (-construct req res @*current-profiler* opts)]
       (store/save (:store opts) data)
       (cond-> res
         (map? res)
