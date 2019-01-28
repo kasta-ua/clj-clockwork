@@ -1,4 +1,9 @@
 (defproject ua.kasta/clockwork "1.0.0"
+  :description "Devtools library - server-side component"
+  :license {:name "Eclipse Public License"
+            :url  "http://www.eclipse.org/legal/epl-v10.html"}
+  :url "https://github.com/kasta-ua/clj-clockwork"
+
   :source-paths ["src"]
 
   :dependencies

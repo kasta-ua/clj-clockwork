@@ -1,0 +1,2 @@
+deploy:
+	lein deploy clojars
