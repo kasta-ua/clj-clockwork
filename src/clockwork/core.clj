@@ -113,7 +113,8 @@
   (let [trace   (:trace data)
         drop?   (when interesting? (comp (complement interesting?) :file))
         parsed  (cond->> (map parse-frame trace)
-                  drop? (drop-while drop?))
+                  drop? (drop-while drop?)
+                  true  (into []))
         current (first parsed)]
     (if current
       (merge data current {:trace parsed})
@@ -154,13 +155,11 @@
      :responseDuration (- now (:time data))
      :responseStatus   (:status res)
      :memoryUsage      nil ;; FIXME: how do we even count that
-     :databaseQueries  (for [q (:db data)]
-                         (parse-trace q db-trace-p))
+     :databaseQueries  (mapv #(parse-trace % db-trace-p) (:db data))
      :databaseDuration (apply + (map :duration (:db data)))
      :cacheTime        0 ;; FIXME: how is this different from DB
      :timelineData     (reverse (:timeline data))
-     :log              (for [log (:logs data)]
-                         (parse-trace log log-trace-p))}))
+     :log              (mapv #(parse-trace % log-trace-p) (:logs data))}))
 
 
 ;;; Server part
