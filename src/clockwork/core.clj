@@ -100,13 +100,14 @@
 
 
 (defn parse-frame [frame]
-  (if (re-find #"\.cljc?$" (.getFileName frame))
-    {:file (-> (.getClassName frame)
-               (str/replace "_" "-")
-               (str/replace #"\$fn-.*" ""))
-     :line (.getLineNumber frame)}
-    {:file (str (.getClassName frame) "::" (.getMethodName frame))
-     :line (.getLineNumber frame)}))
+  (let [fname (.getFileName frame)]
+    (if (and fname (re-find #"\.cljc?$" fname))
+      {:file (-> (.getClassName frame)
+                 (str/replace "_" "-")
+                 (str/replace #"\$fn-.*" ""))
+       :line (.getLineNumber frame)}
+      {:file (str (.getClassName frame) "::" (.getMethodName frame))
+       :line (.getLineNumber frame)})))
 
 
 (defn parse-trace [data interesting?]
