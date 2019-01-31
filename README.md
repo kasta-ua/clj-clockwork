@@ -19,7 +19,7 @@ couple of macros.
 
 It's initialialized by wrapping your app in `clockwork.core/wrap`:
 
-```
+```clojure
 (def app (clockwork.core/wrap my-handler 
            {:authorized? (fn [req] (user/admin? req))}))
 ```
@@ -48,7 +48,7 @@ Signature: `(trace section-name & body)`
 
 Example:
 
-```
+```clojure
 (clockwork/trace (str "app " (:uri req))
   (my-handler req))
 ```
@@ -60,7 +60,7 @@ Signature: `(timing type description & body)`
 
 Example:
 
-```
+```clojure
 (defn q [query]
   (clockwork/timing "pg" (pr-str query) 
       (jdbc/query db-conn (query->args query))))
@@ -76,7 +76,7 @@ course, this works well enough only if you have a single application process -
 and if you have multiple, you have to provide your own. Here is an example of
 using memcached as a store:
 
-```
+```clojure
 (defrecord CWStore [mc prefix]
   clockwork.store/Storage
   (save [this id data]
