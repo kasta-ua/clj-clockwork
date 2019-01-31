@@ -7,6 +7,7 @@ Clojure backend counterpart for the extension.
 [Chrome]: https://github.com/itsgoingd/clockwork-chrome/
 [Firefox]: https://github.com/itsgoingd/clockwork-firefox/
 
+[![Clojars Project](https://img.shields.io/clojars/v/ua.kasta/clockwork.svg)](https://clojars.org/ua.kasta/clockwork)
 
 ## Usage
 
