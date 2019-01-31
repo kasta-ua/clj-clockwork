@@ -183,7 +183,7 @@
     (if data
       {:status 200
        :headers {"Access-Control-Allow-Origin" (get-in req [:headers "origin"] "")}
-       :body   (json/write-value-as-string data)}
+       :body   data}
       {:status 404})))
 
 
@@ -191,7 +191,7 @@
   (binding [*current-profiler* (atom (initial-profiler-data))]
     (let [res  (app req)
           data (-construct req res @*current-profiler* opts)]
-      (store/save (:store opts) data)
+      (store/save (:store opts) (:id data) (json/write-value-as-string data))
       (cond-> res
         (map? res)
         ;;; look at x-clockwork-subrequest

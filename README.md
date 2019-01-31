@@ -68,3 +68,21 @@ Example:
 (defn cache-get [key]
   (clockwork/timing "cache get" key (.get memcache key)))
 ```
+
+### Store
+
+Default store is an in-memory one, just holding everything in an atom. Of
+course, this works well enough only if you have a single application process -
+and if you have multiple, you have to provide your own. Here is an example of
+using memcached as a store:
+
+```
+(defrecord CWStore [mc prefix]
+  clockwork.store/Storage
+  (save [this id data]
+    (try (.set mc (str prefix id) 100000 data)
+         (catch Exception e nil)))
+  (fetch [this id]
+    (try (.get mc (str prefix id))
+         (catch Exception e nil))))
+```
