@@ -88,7 +88,7 @@
 ;;; Constructing
 
 (defn parse-body-params [{:keys [body] :as req}]
-  (when-not (nil? body)
+  (when (and (some? body) (.markSupported body))
     (.reset body)
     (case (get-in req [:headers "content-type"])
       "application/json"
