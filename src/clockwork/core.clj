@@ -230,13 +230,12 @@
 
     (fn [{:keys [uri] :as req}]
       (cond
-        (not (authorized? req))
-        (app req)
-
-        (.startsWith uri prefix)
+        (and (.startsWith uri prefix)
+             (authorized? req))
         (respond store (assoc req :stripped (.substring uri (count prefix))))
 
-        (profile-request? req)
+        (and (profile-request? req)
+             (authorized? req))
         (profile-request app req opts)
 
         :else
